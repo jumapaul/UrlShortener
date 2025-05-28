@@ -4,11 +4,10 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
-    url: ${POSTGRES_URL}
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://postgres:5432/urls
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,6 +16,3 @@ spring:
 
 server:
   port: 8080
-#
-#
-#
