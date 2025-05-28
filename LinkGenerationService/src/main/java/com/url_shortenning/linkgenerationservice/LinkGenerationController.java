@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LinkGenerationController {
     private final LinkGenerationService service;
 
-    //pass the code as parameter
     @PostMapping("Shorten")
     public ResponseEntity<UrlResponse> shortenUrl(
             @RequestBody UrlDto request
