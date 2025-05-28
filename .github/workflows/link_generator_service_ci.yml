@@ -1,11 +1,12 @@
 name: Build and Test LinkGeneration service
+
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - 'LinkGenerationService/**'
   pull_request:
-    branches: [main]
+    branches: [master]
     paths:
       - 'LinkGenerationService/**'
 env:
