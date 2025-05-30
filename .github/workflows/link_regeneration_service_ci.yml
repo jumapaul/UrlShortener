@@ -2,11 +2,11 @@ name: Build and Test LinkRegeneration service
 
 on:
   push:
-    branches: [master]
+    branches: [ master ]
     paths:
       - 'LinkRedirectionService/**'
   pull_request:
-    branches: [master]
+    branches: [ master ]
     paths:
       - 'LinkRedirectionService/**'
 env:
@@ -48,7 +48,7 @@ jobs:
         run: ./gradlew clean build test
 
       - name: Log in to docker hub
-        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "{{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Build docker image
         run: docker build -t $IMAGE_NAME:$GIT_SHA .
