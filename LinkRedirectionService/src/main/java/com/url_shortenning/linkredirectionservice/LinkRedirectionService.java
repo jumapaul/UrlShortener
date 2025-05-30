@@ -25,4 +25,3 @@ public class LinkRedirectionService {
     }
 }
 
-// Thats it
