@@ -1,7 +1,7 @@
 package com.url_shortenning.linkgenerationservice;
 
 import com.url_shortenning.linkgenerationservice.dto.UrlDto;
-import com.url_shortenning.linkgenerationservice.dto.UrlResponse;
+import com.url_shortenning.linkgenerationservice.dto.UrlEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class LinkGenerationController {
 
     //Remove
     @PostMapping("Shorten")
-    public ResponseEntity<UrlResponse> shortenUrl(
+    public ResponseEntity<UrlEntity> shortenUrl(
             @RequestBody UrlDto request
     ) {
         return ResponseEntity.ok(service.shortenUrl(request));

@@ -1,32 +1,36 @@
 package com.url_shortenning.linkgenerationservice;
 
 import com.url_shortenning.linkgenerationservice.dto.UrlDto;
-import com.url_shortenning.linkgenerationservice.dto.UrlResponse;
+import com.url_shortenning.linkgenerationservice.dto.UrlEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class LinkGenerationService {
 
     private final LinkGenerationRepository repository;
     private final String baseUrl = "http://localhost:8000/";
 
-    public UrlResponse shortenUrl(UrlDto url) {
+    @Cacheable(value = "urlResponse", key = "#url.inputUrl")
+    public UrlEntity shortenUrl(UrlDto url) {
 
         String hash = MD5(url.getInputUrl()).substring(0, 7);
 
         return repository.findByInputUrl(url.getInputUrl()).orElseGet(() -> {
-            UrlResponse response = new UrlResponse(
+            UrlEntity response = new UrlEntity(
                     url.getInputUrl(),
-                    baseUrl + hash
+                    hash
             );
-
             repository.save(response);
 
-            return new UrlResponse(
+            return new UrlEntity(
                     url.getInputUrl(),
                     baseUrl + hash
             );

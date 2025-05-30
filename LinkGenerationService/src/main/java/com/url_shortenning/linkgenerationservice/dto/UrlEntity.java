@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "urls")
-public class UrlResponse {
+public class UrlEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String inputUrl;
     private String outputUrl;
 
-    public UrlResponse(String inputUrl, String outputUrl) {
+    public UrlEntity(String inputUrl, String outputUrl) {
         this.inputUrl = inputUrl;
         this.outputUrl = outputUrl;
     }
