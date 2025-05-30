@@ -24,6 +24,3 @@ public class LinkRedirectionService {
         return response.get().getInputUrl();
     }
 }
-
-
-//Here we go
