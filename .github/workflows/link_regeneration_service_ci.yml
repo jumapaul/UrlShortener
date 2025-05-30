@@ -1,0 +1,56 @@
+name: Build and Test LinkRegeneration service
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'LinkRedirectionService/**'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'LinkRedirectionService/**'
+env:
+  IMAGE_NAME: ${{ secrets.REDIRECTION_DOCKER_IMAGE }}
+  GIT_SHA: ${{ github.sha }}
+
+jobs:
+  build:
+    name: Build and test link redirection service
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: LinkRedirectionService
+
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/checkout@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build and run test
+        run: ./gradlew clean build test
+
+      - name: Log in to docker hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "{{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build docker image
+        run: docker build -t $IMAGE_NAME:$GIT_SHA .
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME:$GIT_SHA
